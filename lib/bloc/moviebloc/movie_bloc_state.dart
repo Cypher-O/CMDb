@@ -12,11 +12,14 @@ class MovieLoading extends MovieState {}
 
 class MovieLoaded extends MovieState {
   final List<Movie> movieList;
+  final List<Movie> topRatedMovieList;
 
-  const MovieLoaded(this.movieList);
+  const MovieLoaded(this.movieList, this.topRatedMovieList);
 
   @override
-  List<Object> get props => [movieList];
+  List<Object> get props {
+    return [movieList, topRatedMovieList];
+  }
 }
 
 class MovieError extends MovieState {}

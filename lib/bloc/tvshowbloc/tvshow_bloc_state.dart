@@ -12,11 +12,13 @@ class TvShowLoading extends TvShowState {}
 
 class TvShowLoaded extends TvShowState {
   final List<TvShow> tvShowList;
+  // final List<TvShow> similarTvShowList;
 
   const TvShowLoaded(this.tvShowList);
 
   @override
   List<Object> get props => [tvShowList];
+  // List<Object> get props => [tvShowList, similarTvShowList];
 }
 
 class TvShowError extends TvShowState {}

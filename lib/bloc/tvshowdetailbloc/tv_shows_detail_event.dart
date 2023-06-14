@@ -6,9 +6,10 @@ abstract class TvShowDetailEvent extends Equatable {
 
 class TvShowDetailEventStated extends TvShowDetailEvent {
   final int id;
+  final int seasonNumber;
 
-  TvShowDetailEventStated(this.id);
+  TvShowDetailEventStated(this.id, this.seasonNumber);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [id, seasonNumber];
 }
