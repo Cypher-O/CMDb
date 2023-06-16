@@ -25,17 +25,6 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
         tvShowList = await service.getPopularTvShow();
         // similarTvShowList = await service.getSimilarTvShow(seriesId);
       }
-      // else {
-      //   //print(movieId);
-      //   // tvShowList = await service.getMovieByGenre(movieId);
-      // }// Retrieve similar TV shows
-      // similarTvShowList = await service.getSimilarTvShow(tvShowId);
-
-      // Add the similar TV shows to the existing tvShowList
-      // if (similarTvShowList != null) {
-      //   tvShowList.addAll(similarTvShowList);
-      // }
-
       yield TvShowLoaded(tvShowList);
       // yield TvShowLoaded(tvShowList, similarTvShowList);
     } on Exception catch (e) {

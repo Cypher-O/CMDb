@@ -366,46 +366,6 @@ class ApiService {
     }
   }
 
-  // Future<List<Episode>> getEpisodes(int showId, int seasonNumber) async {
-  //   try {
-  //     final response = await _dio.get('$baseUrl/shows/$showId/seasons/$seasonNumber/episodes',
-  //         queryParameters: {'api_key': apiKey});
-  //
-  //     if (response.statusCode == 200) {
-  //       final data = response.data;
-  //       final List<Episode> episodes = [];
-  //
-  //       for (var episodeData in data['episodes']) {
-  //         final episode = Episode.fromJson(episodeData);
-  //         episodes.add(episode);
-  //       }
-  //
-  //       return episodes;
-  //     } else {
-  //       throw Exception('Failed to fetch episodes');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to fetch episodes: $e');
-  //   }
-  // }
-
-
-  // Future<Episode> getEpisode(int showId, int seasonNumber, int episodeNumber) async {
-  //   try {
-  //     final response = await _dio.get('$baseUrl/shows/$showId/seasons/$seasonNumber/episodes/$episodeNumber',
-  //         queryParameters: {'api_key': apiKey});
-  //
-  //     if (response.statusCode == 200) {
-  //       final data = response.data;
-  //       return Episode.fromJson(data);
-  //     } else {
-  //       throw Exception('Failed to fetch episode details');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to fetch episode details: $e');
-  //   }
-  // }
-
   Future<MovieImage> getMovieImage(int movieId) async {
     try {
       final response = await _dio.get('$baseUrl/movie/$movieId/images?$apiKey');

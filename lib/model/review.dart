@@ -28,10 +28,6 @@ class Review {
       authorImageUrl: json['author_details']['avatar_path'] != null
           ? 'https://image.tmdb.org/t/p/original${json['author_details']['avatar_path']}'
           : null,
-      // createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      // rating: json['rating'] != null ? double.parse(json['rating'].toString()) : null,
-      // authorImageUrl: json['author_image_url'], // Replace with the actual JSON key for the image URL
-      // authorImageUrl: json['author_image_url'] != null ? 'https://image.tmdb.org/t/p/original/${json['author_image_url']}' : null,
     );
   }
 

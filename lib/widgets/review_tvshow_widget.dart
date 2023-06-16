@@ -1,5 +1,5 @@
-import 'package:CMDb/bloc/tvshoreviewbloc/tvshow_review_bloc.dart';
-import 'package:CMDb/bloc/tvshoreviewbloc/tvshow_review_bloc_event.dart';
+import 'package:CMDb/bloc/tvshowreviewbloc/tvshow_review_bloc.dart';
+import 'package:CMDb/bloc/tvshowreviewbloc/tvshow_review_bloc_event.dart';
 import 'package:CMDb/model/review.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

@@ -30,7 +30,7 @@ class RatingWidget extends StatelessWidget {
         // Determine the star icon based on the fill percentage
         IconData starIcon;
         Color starFillColor = starColor;
-        Color starBorderColor = Colors.white;
+        // Color starBorderColor = Colors.white;
         if (index < filledStarCount) {
           // Full star
           starIcon = Icons.star;

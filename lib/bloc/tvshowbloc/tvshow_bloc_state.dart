@@ -18,7 +18,6 @@ class TvShowLoaded extends TvShowState {
 
   @override
   List<Object> get props => [tvShowList];
-  // List<Object> get props => [tvShowList, similarTvShowList];
 }
 
 class TvShowError extends TvShowState {}

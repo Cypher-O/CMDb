@@ -1,10 +1,7 @@
 import 'dart:io';
-
 import 'package:CMDb/bloc/moviebloc/movie_bloc_event.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_event.dart';
 import 'package:CMDb/model/movie.dart';
-import 'package:CMDb/model/tvshow.dart';
-import 'package:CMDb/model/tvshow.dart';
 import 'package:CMDb/model/tvshow.dart';
 import 'package:CMDb/ui/rating_widget.dart';
 import 'package:CMDb/ui/search_bar.dart';
@@ -17,12 +14,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
 import '../bloc/moviebloc/movie_bloc.dart';
 import '../bloc/moviebloc/movie_bloc_state.dart';
 import '../bloc/tvshowbloc/tvshow_bloc.dart';
 import '../bloc/tvshowbloc/tvshow_bloc_state.dart';
-import 'home_screen.dart';
 import 'movie_detail_screen.dart';
 
 class DiscoverScreen extends StatefulWidget {

@@ -5,29 +5,6 @@ import 'package:CMDb/model/tvshow.dart';
 import 'episode.dart';
 import 'genre.dart';
 
-class ProductionCompany {
-  final int id;
-  final String logoPath;
-  final String name;
-  final String originCountry;
-
-  ProductionCompany({
-    this.id,
-    this.logoPath,
-    this.name,
-    this.originCountry,
-  });
-
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) {
-    return ProductionCompany(
-      id: json['id'],
-      logoPath: json['logo_path'],
-      name: json['name'],
-      originCountry: json['origin_country'],
-    );
-  }
-}
-
 class TvShowDetail {
   final int id;
   final String name;
@@ -45,7 +22,6 @@ class TvShowDetail {
   final List<Season> seasons;
   List<Episode> episodes;
   final List<Genre> genres;
-  List<ProductionCompany> productionCompanies;
   List<TvShow> tvShow;
   String trailerId;
   TvShowImage tvShowImage;
@@ -65,7 +41,6 @@ class TvShowDetail {
     this.voteAverage,
     this.voteCount,
     this.genres,
-    this.productionCompanies,
     this.seasons,
     this.episodes, this.tvShow,});
 
@@ -96,9 +71,6 @@ class TvShowDetail {
       voteCount: json['vote_count']?.toString(),
       genres: (json['genres'] as List<dynamic>).map((genre) =>
           Genre.fromJson(genre)).toList(),
-      productionCompanies: (json['production_companies'] as List)
-          .map((company) => ProductionCompany.fromJson(company))
-          .toList(),
       seasons: (json['seasons'] as List<dynamic>)
           .map((season) => Season.fromJson(season))
           .toList(),

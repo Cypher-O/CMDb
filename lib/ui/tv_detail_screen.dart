@@ -1,17 +1,16 @@
 import 'dart:io';
-
 import 'package:CMDb/bloc/recommendedtvshowbloc/recommended_tvshow_bloc.dart';
 import 'package:CMDb/bloc/recommendedtvshowbloc/recommended_tvshow_bloc_event.dart';
 import 'package:CMDb/bloc/recommendedtvshowbloc/recommended_tvshow_bloc_state.dart';
 import 'package:CMDb/bloc/similartvshowbloc/similar_tvshow_bloc.dart';
 import 'package:CMDb/bloc/similartvshowbloc/similar_tvshow_bloc_event.dart';
 import 'package:CMDb/bloc/similartvshowbloc/similar_tvshow_bloc_state.dart';
-import 'package:CMDb/bloc/tvshoreviewbloc/tvshow_review_bloc.dart';
-import 'package:CMDb/bloc/tvshoreviewbloc/tvshow_review_bloc_event.dart';
-import 'package:CMDb/bloc/tvshoreviewbloc/tvshow_review_bloc_state.dart';
 import 'package:CMDb/bloc/tvshowdetailbloc/tv_shows_detail_bloc.dart';
 import 'package:CMDb/bloc/tvshowdetailbloc/tv_shows_detail_event.dart';
 import 'package:CMDb/bloc/tvshowdetailbloc/tv_shows_detail_state.dart';
+import 'package:CMDb/bloc/tvshowreviewbloc/tvshow_review_bloc.dart';
+import 'package:CMDb/bloc/tvshowreviewbloc/tvshow_review_bloc_event.dart';
+import 'package:CMDb/bloc/tvshowreviewbloc/tvshow_review_bloc_state.dart';
 import 'package:CMDb/model/cast_list.dart';
 import 'package:CMDb/model/review.dart';
 import 'package:CMDb/model/screen_shot.dart';
@@ -27,13 +26,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../model/episode.dart';
 import '../model/genre.dart';
 import '../model/season.dart';
@@ -136,20 +133,7 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
           );
         } else if (state is TvShowDetailLoaded) {
           tvShowDetail = state.detail;
-          // final revenue = int.parse(tvShowDetail.revenue ?? "0");
-          // final formattedRevenue = NumberFormat.compactCurrency(
-          //   decimalDigits: 0,
-          //   symbol: '\$',
-          // ).format(revenue);
-          // final revenueSymbol = revenue >= 1000000000
-          //     ? 'B'
-          //     : revenue >= 1000000
-          //         ? 'M'
-          //         : '';
-          // final finalFormattedRevenue = revenueSymbol.isEmpty
-          //     ? formattedRevenue
-          //     : formattedRevenue.substring(0, formattedRevenue.length - 1) +
-          //         revenueSymbol;
+
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
@@ -410,36 +394,6 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                             ),
                           ],
                         ),
-                        // SizedBox(width: 30,),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: <Widget>[
-                        //     Text(
-                        //       'revenue'.toUpperCase(),
-                        //       style: Theme.of(context)
-                        //           .textTheme
-                        //           .caption
-                        //           .copyWith(
-                        //               fontWeight: FontWeight.bold,
-                        //               fontFamily: 'mulish',
-                        //               fontSize: 13.0),
-                        //     ),
-                        //     SizedBox(
-                        //       height: 3,
-                        //     ),
-                        //     Text(
-                        //       finalFormattedRevenue,
-                        //       style: Theme.of(context)
-                        //           .textTheme
-                        //           .subtitle2
-                        //           .copyWith(
-                        //             color: Colors.yellow[800],
-                        //             fontSize: 13,
-                        //             fontFamily: 'mulish',
-                        //           ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                     SizedBox(
@@ -496,13 +450,6 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                           setState(() {
                             selectedSeason = season;
                           });
-                          // if (isContainerVisible)
-                          // BuildEpisodeList(
-                          //   showId: tvShowDetail.id,
-                          //   selectedSeason: selectedSeason,
-                          //   toggleContainerVisibility:
-                          //       toggleContainerVisibility,
-                          // );
                         },
                       ),
                     ),
@@ -946,41 +893,6 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                                 fontFamily: 'mulish',
                               ),
                             ),
-                            SizedBox(height: 10.0),
-                        Container(
-                          height: 120.0,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: tvShowDetail.productionCompanies.length,
-                            itemBuilder: (context, index) {
-                              final company =
-                                  tvShowDetail.productionCompanies[index];
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    company.logoPath != null
-                                        ? CachedNetworkImage(
-                                            imageUrl:
-                                                'https://image.tmdb.org/t/p/w500${company.logoPath}',
-                                            width: 60,
-                                            height: 60, color: Colors.white,
-                                          )
-                                        : SizedBox.shrink(),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      company.name,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
                             ],
                         ),
                         // SizedBox(height: 20,),

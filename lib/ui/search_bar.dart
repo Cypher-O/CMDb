@@ -22,10 +22,6 @@ class SearchBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  // final TextEditingController _searchController = TextEditingController();
-  // final ValueNotifier<String> _searchTextNotifier = ValueNotifier('');
-  // final FocusNode _searchFocusNode = FocusNode();
-  // final searchDelegate = MovieSearchDelegate();
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   final MovieSearchDelegate searchDelegate = MovieSearchDelegate();
@@ -72,15 +68,6 @@ class _SearchBarState extends State<SearchBar> {
           });
           widget.onSearchTextChanged?.call(text);
         },
-
-        // onChanged: (text) {
-        //   widget.onSearchTextChanged?.call(text);
-        // },
-        // onChanged: (_) {
-        //   _updateSearchResults();
-        // },
-        // onChanged: (_) {},
-        // onChanged: widget.onSearchTextChanged,
         decoration: InputDecoration(
           filled: true,
           border: OutlineInputBorder(
@@ -90,14 +77,6 @@ class _SearchBarState extends State<SearchBar> {
           prefixIcon: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: widget.onBackButtonPressed,
-            // () {
-            // Navigator.pop(context); // Go back to the previous screen
-
-            // setState(() {
-            //   _searchVisible = false; // Dispose of the bottom in the AppBar
-            //   _searchResults = []; // Clear the search results
-            // });
-            // },
           ),
           hintText: 'Search...',
           suffixIcon: ClipOval(
@@ -112,8 +91,6 @@ class _SearchBarState extends State<SearchBar> {
           ),
         ),
       ),
-      // },
     );
-    // );
   }
 }
