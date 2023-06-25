@@ -1,29 +1,7 @@
 import 'package:CMDb/model/cast_list.dart';
 import 'package:CMDb/model/genre.dart';
 import 'package:CMDb/model/movie_image.dart';
-
-class ProductionCompany {
-  final int id;
-  final String logoPath;
-  final String name;
-  final String originCountry;
-
-  ProductionCompany({
-    this.id,
-    this.logoPath,
-    this.name,
-    this.originCountry,
-  });
-
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) {
-    return ProductionCompany(
-      id: json['id'],
-      logoPath: json['logo_path'],
-      name: json['name'],
-      originCountry: json['origin_country'],
-    );
-  }
-}
+import 'package:CMDb/model/production_company.dart';
 
 class MovieDetail {
   final String id;

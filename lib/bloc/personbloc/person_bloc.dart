@@ -18,7 +18,7 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
     final apiRepository = ApiService();
     yield PersonLoading();
     try {
-      print('Genrebloc called.');
+      // print('Genrebloc called.');
       final List<Person> movies = await apiRepository.getTrendingPerson();
       yield PersonLoaded(movies);
     } catch (_) {

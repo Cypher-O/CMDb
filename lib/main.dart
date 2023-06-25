@@ -1,7 +1,9 @@
+import 'package:CMDb/model/watch_list.dart';
 import 'package:flutter/material.dart';
 import 'package:CMDb/ui/home_screen.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:provider/provider.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,15 +24,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return MaterialApp(
-      title: 'CMDb',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.orange,
-        accentColor: Colors.white,
+    return ChangeNotifierProvider(
+      create: (context) => WatchlistModel(),
+      child: MaterialApp(
+        title: 'CMDb',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.orange,
+          accentColor: Colors.white,
+        ),
+        home:  HomeScreen(),
       ),
-      home:  HomeScreen(),
     );
   }
 }

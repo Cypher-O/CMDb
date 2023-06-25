@@ -49,7 +49,10 @@ class MovieDetailScreen extends StatefulWidget {
   State<MovieDetailScreen> createState() => _MovieDetailScreenState();
 }
 
-class _MovieDetailScreenState extends State<MovieDetailScreen> {
+class _MovieDetailScreenState extends State<MovieDetailScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation<Offset> _animation;
   int _currentIndex = 0;
   bool showMore = false;
   PageController _pageController;
@@ -97,6 +100,28 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   // }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _animation = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -120,7 +145,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       child: WillPopScope(
         child: Scaffold(
           // extendBodyBehindAppBar: true,
-          body: _buildDetailBody(context),
+          body: SlideTransition(
+            position: _animation,
+            child: _buildDetailBody(context),
+          ),
           // body: Stack(
           //   children: [
           //     _buildDetailBody(context),
@@ -220,7 +248,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           final finalFormattedBudget = budgetSymbol.isEmpty
               ? formattedBudget
               : formattedBudget.substring(0, formattedBudget.length - 1) +
-              budgetSymbol;
+                  budgetSymbol;
           final finalFormattedRevenue = revenueSymbol.isEmpty
               ? formattedRevenue
               : formattedRevenue.substring(0, formattedRevenue.length - 1) +
@@ -446,23 +474,26 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           children: <Widget>[
                             Text(
                               'Release date'.toUpperCase(),
-                              style: Theme.of(context).textTheme.caption.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13.0,
-                                    fontFamily: 'mulish',
-                                  ),
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13.0,
+                                        fontFamily: 'mulish',
+                                      ),
                             ),
                             SizedBox(
                               height: 3,
                             ),
                             Text(
                               movieDetail.releaseDate,
-                              style:
-                                  Theme.of(context).textTheme.subtitle2.copyWith(
-                                        color: Colors.yellow[800],
-                                        fontSize: 13,
-                                        fontFamily: 'mulish',
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color: Colors.yellow[800],
+                                    fontSize: 13,
+                                    fontFamily: 'mulish',
+                                  ),
                             ),
                           ],
                         ),
@@ -471,23 +502,26 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           children: <Widget>[
                             Text(
                               'Duration'.toUpperCase(),
-                              style: Theme.of(context).textTheme.caption.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'mulish',
-                                    fontSize: 13.0,
-                                  ),
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'mulish',
+                                        fontSize: 13.0,
+                                      ),
                             ),
                             SizedBox(
                               height: 3,
                             ),
                             Text(
                               '${hours}h ${minutes}m',
-                              style:
-                                  Theme.of(context).textTheme.subtitle2.copyWith(
-                                        color: Colors.yellow[800],
-                                        fontSize: 13,
-                                        fontFamily: 'mulish',
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color: Colors.yellow[800],
+                                    fontSize: 13,
+                                    fontFamily: 'mulish',
+                                  ),
                             ),
                           ],
                         ),
@@ -496,10 +530,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           children: <Widget>[
                             Text(
                               'budget'.toUpperCase(),
-                              style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'mulish',
-                                  fontSize: 13.0),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'mulish',
+                                      fontSize: 13.0),
                             ),
                             SizedBox(
                               height: 3,
@@ -507,12 +544,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             Text(
                               // movieDetail.budget,
                               finalFormattedBudget,
-                              style:
-                                  Theme.of(context).textTheme.subtitle2.copyWith(
-                                        color: Colors.yellow[800],
-                                        fontSize: 13,
-                                        fontFamily: 'mulish',
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color: Colors.yellow[800],
+                                    fontSize: 13,
+                                    fontFamily: 'mulish',
+                                  ),
                             ),
                           ],
                         ),
@@ -521,22 +560,27 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           children: <Widget>[
                             Text(
                               'revenue'.toUpperCase(),
-                              style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'mulish',
-                                  fontSize: 13.0),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'mulish',
+                                      fontSize: 13.0),
                             ),
                             SizedBox(
                               height: 3,
                             ),
                             Text(
                               finalFormattedRevenue,
-                              style:
-                                  Theme.of(context).textTheme.subtitle2.copyWith(
-                                        color: Colors.yellow[800],
-                                        fontSize: 13,
-                                        fontFamily: 'mulish',
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color: Colors.yellow[800],
+                                    fontSize: 13,
+                                    fontFamily: 'mulish',
+                                  ),
                             ),
                           ],
                         ),
@@ -583,8 +627,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           ? Padding(
                                               padding: EdgeInsets.all(150.0),
                                               child: LoadingIndicator(
-                                                indicatorType:
-                                                    Indicator.lineSpinFadeLoader,
+                                                indicatorType: Indicator
+                                                    .lineSpinFadeLoader,
                                               ),
                                             )
                                           : const CupertinoActivityIndicator(),
@@ -607,8 +651,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                               Column(
                                                 children: [
                                                   Expanded(
-                                                    child:
-                                                        PhotoViewGallery.builder(
+                                                    child: PhotoViewGallery
+                                                        .builder(
                                                       itemCount: movieDetail
                                                           .movieImage
                                                           .backdrops
@@ -638,7 +682,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                                           PageController(
                                                               initialPage:
                                                                   tappedIndex),
-                                                      onPageChanged: (int index) {
+                                                      onPageChanged:
+                                                          (int index) {
                                                         setState(() {
                                                           _currentIndex = index;
                                                         });
@@ -654,9 +699,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                                 right: 0,
                                                 child: Container(
                                                   height: 110,
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 15),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 15),
                                                   child: Row(
                                                     children: [
                                                       IconButton(
@@ -664,7 +709,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                                             Icons.close),
                                                         color: Colors.white,
                                                         onPressed: () {
-                                                          Navigator.pop(context);
+                                                          Navigator.pop(
+                                                              context);
                                                         },
                                                       ),
                                                     ],
@@ -721,8 +767,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           width: 80,
                                           height: 80,
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(100)),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(100)),
                                             image: DecorationImage(
                                               image: imageBuilder,
                                               fit: BoxFit.cover,
@@ -736,7 +783,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                         child: Center(
                                           child: Platform.isAndroid
                                               ? const Padding(
-                                                  padding: EdgeInsets.all(150.0),
+                                                  padding:
+                                                      EdgeInsets.all(150.0),
                                                   child: LoadingIndicator(
                                                     indicatorType: Indicator
                                                         .lineSpinFadeLoader,
@@ -835,7 +883,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                     : const CupertinoActivityIndicator(),
                               );
                             } else if (state is SimilarMovieLoaded) {
-                              List<Movie> similarMovies = state.similarMovieList;
+                              List<Movie> similarMovies =
+                                  state.similarMovieList;
                               return SimilarMovieWidget(
                                   similarMovies: similarMovies);
                               // return SimilarTvSeriesWidget(: movieList);
@@ -889,7 +938,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 ? const Padding(
                                     padding: EdgeInsets.all(150.0),
                                     child: LoadingIndicator(
-                                      indicatorType: Indicator.lineSpinFadeLoader,
+                                      indicatorType:
+                                          Indicator.lineSpinFadeLoader,
                                     ),
                                   )
                                 : const CupertinoActivityIndicator(),
@@ -921,7 +971,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         SizedBox(
                           height: 17.0,
                         ),
-                        BlocBuilder<RecommendedMovieBloc, RecommendedMovieState>(
+                        BlocBuilder<RecommendedMovieBloc,
+                            RecommendedMovieState>(
                           builder: (context, state) {
                             if (state is RecommendedMovieLoading) {
                               return Center(
@@ -957,10 +1008,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         Text(
                           'Production Companies'.toUpperCase(),
                           style: Theme.of(context).textTheme.caption.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                            fontFamily: 'mulish',
-                          ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                fontFamily: 'mulish',
+                              ),
                         ),
                         SizedBox(height: 10.0),
                         Container(
@@ -970,18 +1021,19 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             itemCount: movieDetail.productionCompanies.length,
                             itemBuilder: (context, index) {
                               final company =
-                              movieDetail.productionCompanies[index];
+                                  movieDetail.productionCompanies[index];
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
                                     company.logoPath != null
                                         ? CachedNetworkImage(
-                                      imageUrl:
-                                      'https://image.tmdb.org/t/p/w500${company.logoPath}',
-                                      width: 60,
-                                      height: 60, color: Colors.white,
-                                    )
+                                            imageUrl:
+                                                'https://image.tmdb.org/t/p/w500${company.logoPath}',
+                                            width: 60,
+                                            height: 60,
+                                            color: Colors.white,
+                                          )
                                         : SizedBox.shrink(),
                                     SizedBox(height: 8),
                                     Text(

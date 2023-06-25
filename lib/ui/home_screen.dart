@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:CMDb/bloc/borntodaybloc/born_today_bloc.dart';
+import 'package:CMDb/bloc/borntodaybloc/born_today_event.dart';
+import 'package:CMDb/bloc/borntodaybloc/born_today_state.dart';
 import 'package:CMDb/bloc/moviebloc/movie_bloc.dart';
 import 'package:CMDb/bloc/moviebloc/movie_bloc_event.dart';
 import 'package:CMDb/bloc/moviebloc/movie_bloc_state.dart';
@@ -8,6 +11,7 @@ import 'package:CMDb/bloc/personbloc/person_state.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_event.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_state.dart';
+import 'package:CMDb/model/born_today.dart';
 import 'package:CMDb/model/movie.dart';
 import 'package:CMDb/model/person.dart';
 import 'package:CMDb/model/tvshow.dart';
@@ -18,6 +22,7 @@ import 'package:CMDb/ui/movie_detail_screen.dart';
 import 'package:CMDb/ui/profile_screen.dart';
 import 'package:CMDb/ui/search_bar.dart';
 import 'package:CMDb/ui/watchlist_screen.dart';
+import 'package:CMDb/widgets/born_today_widget.dart';
 import 'package:CMDb/widgets/search_widget_listviews.dart';
 import 'package:CMDb/widgets/tvshow_list_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -31,7 +36,7 @@ import 'package:CMDb/ui/search_delegate.dart';
 
 class HomeScreen extends StatefulWidget {
   // final MovieSearchDelegate searchDelegate = MovieSearchDelegate();
- const HomeScreen({Key key}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -41,10 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final MovieSearchDelegate searchDelegate = MovieSearchDelegate();
   SearchWidgets searchWidgets;
   bool searchIconClicked = false;
+
   // int currentPage = 0;
 
   // final TvShow tvShow;
   final _apiService = ApiService();
+
   // final searchDelegate = MovieSearchDelegate();
 
   PageController _pageController;
@@ -68,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-     searchWidgets = SearchWidgets(context, setState);
+    searchWidgets = SearchWidgets(context, setState);
     _pageController = PageController();
   }
 
@@ -80,125 +87,92 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-
-  // void _performSearch(String query) async {
-  //   List<dynamic> results = await _apiService.returnSearchResults(query);
-  //   setState(() {
-  //     _searchResults = results;
-  //     if (_searchResults.isEmpty) {
-  //       recentSearches.add(
-  //           query); // Add query to recent searches if search results are empty
-  //     }
-  //   });
-  // }
-  //
-  //  void _updateSearchResults(String query) {
-  //   if (query.isNotEmpty) {
-  //     _apiService.returnSearchResults(query).then((movies) {
-  //       setState(() {
-  //         _searchResults = movies;
-  //         //   if (_searchResults.isEmpty) {
-  //         //     recentSearches.add(query);
-  //         //   }
-  //       });
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _searchResults = [];
-  //     });
-  //   }
-  // }
-
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MovieBloc>(
-          create: (_) =>
-          MovieBloc()
-            ..add(const MovieEventStarted(0, '')),
+          create: (_) => MovieBloc()..add(const MovieEventStarted(0, '')),
         ),
         BlocProvider<TvShowBloc>(
-          create: (_) =>
-          TvShowBloc()
-            ..add(const TvShowEventStarted(0, '')),
+          create: (_) => TvShowBloc()..add(const TvShowEventStarted(0, '')),
         ),
         BlocProvider<PersonBloc>(
-          create: (_) =>
-          PersonBloc()
-            ..add(PersonEventStated()),
+          create: (_) => PersonBloc()..add(PersonEventStated()),
+        ),
+        BlocProvider<BornTodayBloc>(
+          create: (_) => BornTodayBloc()..add(BornTodayEventStarted()),
         ),
       ],
       child: Scaffold(
         appBar: _selectedIndex == 0
             ? AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Icon(
-            Icons.menu_rounded,
-            color: Colors.white,
-          ),
-          title: Text(
-            'cmdB'.toUpperCase(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .caption
-                .copyWith(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'mulish',
-            ),
-          ),
-          actions: [
-            Container(
-              child: IconButton(
-                icon: const Icon(Icons.search_rounded),
-                color: Colors.white,
-                onPressed: () {
-                  setState(() {
-                    searchIconClicked = !searchIconClicked;
-                    searchDelegate.searchVisible = searchIconClicked;
-                    if (!searchIconClicked) {
-                      searchDelegate.searchController.clear();
-                    }
-                    // searchDelegate.searchVisible = !searchDelegate.searchVisible;
-                  });
-                },
-              ),
-            ),
-          ],
-          bottom: searchDelegate.searchVisible ?
-          SearchBar(
-            onSearchTextChanged: (text) {
-              setState(() {
-                searchDelegate.updateSearchResults(text);
-              });
-            },
-            // onSearchTextChanged: searchDelegate.updateSearchResults,
-            onClearButtonPressed: () {
-              setState(() {
-                searchDelegate.searchController.clear(); // Clear the search text
-                searchDelegate.searchResults = []; // Clear the search results
-              });
-            },
-            onBackButtonPressed: () {
-              setState(() {
-                searchDelegate.searchVisible = false; // Dispose of the bottom in the AppBar
-                searchDelegate.searchResults = []; // Clear the search results
-              });
-            },
-          ) : null,
-        ) : null,
-
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: Icon(
+                  Icons.menu_rounded,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'cmdB'.toUpperCase(),
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'mulish',
+                      ),
+                ),
+                actions: [
+                  Container(
+                    child: IconButton(
+                      icon: const Icon(Icons.search_rounded),
+                      color: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          searchIconClicked = !searchIconClicked;
+                          searchDelegate.searchVisible = searchIconClicked;
+                          if (!searchIconClicked) {
+                            searchDelegate.searchController.clear();
+                          }
+                          // searchDelegate.searchVisible = !searchDelegate.searchVisible;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+                bottom: searchDelegate.searchVisible
+                    ? SearchBar(
+                        onSearchTextChanged: (text) {
+                          setState(() {
+                            searchDelegate.updateSearchResults(text);
+                          });
+                        },
+                        // onSearchTextChanged: searchDelegate.updateSearchResults,
+                        onClearButtonPressed: () {
+                          setState(() {
+                            searchDelegate.searchController
+                                .clear(); // Clear the search text
+                            searchDelegate.searchResults =
+                                []; // Clear the search results
+                          });
+                        },
+                        onBackButtonPressed: () {
+                          setState(() {
+                            searchDelegate.searchVisible =
+                                false; // Dispose of the bottom in the AppBar
+                            searchDelegate.searchResults =
+                                []; // Clear the search results
+                          });
+                        },
+                      )
+                    : null,
+              )
+            : null,
         body: IndexedStack(
           index: _selectedIndex,
           children: [
             _buildBody(context),
-            for (int i = 0; i < _widgetOptions.length; i++)
-              _widgetOptions[i],
+            for (int i = 0; i < _widgetOptions.length; i++) _widgetOptions[i],
           ],
         ),
         bottomNavigationBar: BottomNavBar(
@@ -226,11 +200,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Center(
                       child: Platform.isAndroid
                           ? const Padding(
-                        padding: EdgeInsets.all(150.0),
-                        child: LoadingIndicator(
-                          indicatorType: Indicator.lineSpinFadeLoader,
-                        ),
-                      )
+                              padding: EdgeInsets.all(150.0),
+                              child: LoadingIndicator(
+                                indicatorType: Indicator.lineSpinFadeLoader,
+                              ),
+                            )
                           : const CupertinoActivityIndicator(),
                     );
                   } else if (state is MovieLoaded) {
@@ -261,39 +235,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: CachedNetworkImage(
                                       imageUrl:
-                                      'https://image.tmdb.org/t/p/original/${movie
-                                          .backdropPath}',
+                                          'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
                                       height:
-                                      MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height /
-                                          3,
-                                      width:
-                                      MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width,
+                                          MediaQuery.of(context).size.height /
+                                              3,
+                                      width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.cover,
-                                      placeholder: (context, url) =>
-                                      Platform
-                                          .isAndroid
+                                      placeholder: (context, url) => Platform
+                                              .isAndroid
                                           ? Transform.scale(
-                                            scale: 0.3,
-                                            child:  LoadingIndicator(
-                                              indicatorType: Indicator.lineSpinFadeLoader,
-                                            ),
-                                          )
+                                              scale: 0.3,
+                                              child: LoadingIndicator(
+                                                indicatorType: Indicator
+                                                    .lineSpinFadeLoader,
+                                              ),
+                                            )
                                           : const CupertinoActivityIndicator(),
                                       errorWidget: (context, url, error) =>
                                           Container(
-                                            decoration: const BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/image_not_found.jpeg'),
-                                              ),
-                                            ),
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/image_not_found.jpeg'),
                                           ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -321,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             autoPlay: true,
                             autoPlayInterval: const Duration(seconds: 5),
                             autoPlayAnimationDuration:
-                            const Duration(milliseconds: 800),
+                                const Duration(milliseconds: 800),
                             pauseAutoPlayOnTouch: true,
                             viewportFraction: 0.8,
                             enlargeCenterPage: true,
@@ -361,20 +327,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                         return Center(
                                           child: Platform.isAndroid
                                               ? const Padding(
-                                            padding:
-                                            EdgeInsets.all(150.0),
-                                            child: LoadingIndicator(
-                                              indicatorType: Indicator
-                                                  .lineSpinFadeLoader,
-                                            ),
-                                          )
+                                                  padding:
+                                                      EdgeInsets.all(150.0),
+                                                  child: LoadingIndicator(
+                                                    indicatorType: Indicator
+                                                        .lineSpinFadeLoader,
+                                                  ),
+                                                )
                                               : const CupertinoActivityIndicator(),
                                         );
                                       } else if (state is TvShowLoaded) {
                                         List<TvShow> tvShows = state.tvShowList;
                                         // print(tvShows.length);
-                                        return TvShowListWidget(tvShows: tvShows);
+                                        return TvShowListWidget(
+                                            tvShows: tvShows);
                                       } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  BlocBuilder<BornTodayBloc, BornTodayState>(
+                                    builder: (context, state) {
+                                      if (state is BornTodayLoading) {
+                                        return Center(
+                                          child: Platform.isAndroid
+                                              ? const Padding(
+                                                  padding:
+                                                      EdgeInsets.all(150.0),
+                                                  child: LoadingIndicator(
+                                                    indicatorType: Indicator
+                                                        .lineSpinFadeLoader,
+                                                  ),
+                                                )
+                                              : const CupertinoActivityIndicator(),
+                                        );
+                                      } else
+                                      if (state is BornTodayLoaded) {
+                                        // List<BornToday> bornToday =
+                                        // List<BornToday> bornToday = [];
+                                        //     state.bornTodayList;
+                                        final bornToday = state.bornTodayList;
+                                        // print(tvShows.length);
+                                        return BornTodayListWidget(
+                                            bornToday: bornToday);
+                                      } else if (state is BornTodayError) {
+                                        return Center(
+                                          child: Text(
+                                              'Failed to fetch born today data.'),
+                                        );
+                                      } else {
+                                        // BlocProvider.of<BornTodayBloc>(context)
+                                        //     .add(BornTodayEventStarted());
                                         return Container();
                                       }
                                     },
@@ -413,51 +420,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                             itemCount: personList.length,
                                             separatorBuilder:
                                                 (context, index) =>
-                                            const VerticalDivider(
+                                                    const VerticalDivider(
                                               color: Colors.transparent,
                                               width: 8,
                                             ),
                                             itemBuilder: (context, index) {
-                                              Person person =
-                                              personList[index];
+                                              Person person = personList[index];
                                               return Container(
                                                 // margin: EdgeInsets.only(bottom: 100),
                                                 child: Column(
                                                   children: <Widget>[
                                                     Card(
                                                       shape:
-                                                      RoundedRectangleBorder(
+                                                          RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            100),
+                                                            BorderRadius
+                                                                .circular(100),
                                                       ),
                                                       elevation: 3,
                                                       child: ClipRRect(
                                                         child:
-                                                        CachedNetworkImage(
+                                                            CachedNetworkImage(
                                                           imageUrl:
-                                                          'https://image.tmdb.org/t/p/w200${person
-                                                              .profilePath}',
-                                                          imageBuilder: (
-                                                              context,
+                                                              'https://image.tmdb.org/t/p/w200${person.profilePath}',
+                                                          imageBuilder: (context,
                                                               imageProvider) {
                                                             return Container(
                                                               width: 80,
                                                               height: 80,
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 borderRadius:
-                                                                const BorderRadius
-                                                                    .all(
+                                                                    const BorderRadius
+                                                                        .all(
                                                                   Radius
                                                                       .circular(
-                                                                      100),
+                                                                          100),
                                                                 ),
                                                                 image:
-                                                                DecorationImage(
+                                                                    DecorationImage(
                                                                   image:
-                                                                  imageProvider,
+                                                                      imageProvider,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 ),
@@ -465,46 +468,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             );
                                                           },
                                                           placeholder:
-                                                              (context,
-                                                              url) =>
-                                                              Container(
-                                                                width: 80,
-                                                                height: 80,
-                                                                child: Center(
-                                                                  child: Platform
+                                                              (context, url) =>
+                                                                  Container(
+                                                            width: 80,
+                                                            height: 80,
+                                                            child: Center(
+                                                              child: Platform
                                                                       .isAndroid
-                                                                      ? const Padding(
-                                                                    padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                        50.0),
-                                                                    child:
-                                                                    LoadingIndicator(
-                                                                      indicatorType:
-                                                                      Indicator
-                                                                          .lineSpinFadeLoader,
-                                                                    ),
-                                                                  )
-                                                                      : const CupertinoActivityIndicator(),
-                                                                ),
-                                                              ),
-                                                          errorWidget:
-                                                              (context, url,
-                                                              error) =>
+                                                                  ? const Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              50.0),
+                                                                      child:
+                                                                          LoadingIndicator(
+                                                                        indicatorType:
+                                                                            Indicator.lineSpinFadeLoader,
+                                                                      ),
+                                                                    )
+                                                                  : const CupertinoActivityIndicator(),
+                                                            ),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
                                                               Container(
-                                                                width: 90,
-                                                                height: 90,
-                                                                decoration:
+                                                            width: 90,
+                                                            height: 90,
+                                                            decoration:
                                                                 const BoxDecoration(
-                                                                  image:
+                                                              image:
                                                                   DecorationImage(
-                                                                    image:
+                                                                image:
                                                                     AssetImage(
-                                                                      'assets/images/image_not_found.jpeg',
-                                                                    ),
-                                                                  ),
+                                                                  'assets/images/image_not_found.jpeg',
                                                                 ),
                                                               ),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -514,12 +513,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           person.name
                                                               .toUpperCase(),
                                                           style:
-                                                          const TextStyle(
-                                                            color:
-                                                            Colors.white,
+                                                              const TextStyle(
+                                                            color: Colors.white,
                                                             fontSize: 12,
                                                             fontFamily:
-                                                            'mulish',
+                                                                'mulish',
                                                           ),
                                                         ),
                                                       ),
@@ -531,12 +529,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .knowForDepartment
                                                               .toUpperCase(),
                                                           style:
-                                                          const TextStyle(
-                                                            color:
-                                                            Colors.white,
+                                                              const TextStyle(
+                                                            color: Colors.white,
                                                             fontSize: 10,
                                                             fontFamily:
-                                                            'mulish',
+                                                                'mulish',
                                                           ),
                                                         ),
                                                       ),

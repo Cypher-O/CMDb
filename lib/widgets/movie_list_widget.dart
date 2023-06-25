@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:CMDb/model/movie.dart';
+import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/ui/movie_detail_screen.dart';
 import 'package:CMDb/ui/rating_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
+
 
 class MovieListWidget extends StatelessWidget {
   final List<Movie> movieList;
@@ -89,24 +92,57 @@ class MovieListWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // Positioned(
+                    //   top: 0,
+                    //   left: 0,
+                    //   child:
+                    //   GestureDetector(
+                    //     onTap: () {},
+                    //     child: Container(
+                    //       decoration:
+                    //       BoxDecoration(
+                    //         shape: BoxShape
+                    //             .circle,
+                    //         color: Colors
+                    //             .black26,
+                    //       ),
+                    //       child: const Icon(
+                    //           Icons.add,
+                    //           size:
+                    //           30.0),
+                    //     ),
+                    //   ),
+                    // ),
                     Positioned(
                       top: 0,
                       left: 0,
-                      child:
-                      Container(
-                        decoration:
-                        BoxDecoration(
-                          shape: BoxShape
-                              .circle,
-                          color: Colors
-                              .black26,
-                        ),
-                        child: const Icon(
-                            Icons.add,
-                            size:
-                            30.0),
+                      child: Consumer<WatchlistModel>(
+                        builder: (context, watchlistModel, child) {
+                          bool isAdded = watchlistModel.watchlist.contains(movie);
+
+                          return GestureDetector(
+                            onTap: () {
+                              if (isAdded) {
+                                watchlistModel.removeFromWatchlist(movie);
+                              } else {
+                                watchlistModel.addToWatchlist(movie);
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black26,
+                              ),
+                              child: Icon(
+                                isAdded ? Icons.remove : Icons.add,
+                                size: 30.0,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
+
                   ],
                 ),
               ),

@@ -893,6 +893,44 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                                 fontFamily: 'mulish',
                               ),
                             ),
+                            SizedBox(height: 10.0),
+                            Container(
+                              height: 120.0,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: tvShowDetail.productionCompanies.length,
+                                itemBuilder: (context, index) {
+                                  final company =
+                                  tvShowDetail.productionCompanies[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        company.logoPath != null
+                                            ?
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                          'https://image.tmdb.org/t/p/w500${company.logoPath}',
+                                          width: 60,
+                                          height: 60,
+                                          color: Colors.white,
+                                        )
+                                            : Text("No image available"),
+                                            // : SizedBox.shrink(),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          company.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                             ],
                         ),
                         // SizedBox(height: 20,),

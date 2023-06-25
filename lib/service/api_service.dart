@@ -1,3 +1,4 @@
+import 'package:CMDb/model/born_today.dart';
 import 'package:CMDb/model/review.dart';
 import 'package:CMDb/model/tv_show_image.dart';
 import 'package:CMDb/model/tvshow.dart';
@@ -365,6 +366,134 @@ class ApiService {
       throw Exception('Failed to fetch episodes: $e');
     }
   }
+
+  // Future<List<BornToday>> getBornToday({int page = 1, int pageSize = 20}) async {
+  //   try {
+  //     final now = DateTime.now();
+  //     final formattedDate = '${now.month}-${now.day}';
+  //     final cache = <int, DateTime>{};
+  //
+  //     final List<BornToday> birthdays = [];
+  //
+  //     while (true) {
+  //       final response = await _dio.get(
+  //         '$baseUrl/person/popular',
+  //         queryParameters: {'api_key': apiKey, 'page': page, 'page_size': pageSize},
+  //         options: Options(headers: {'Authorization': 'Bearer $token'}),
+  //       );
+  //
+  //       if (response.statusCode == 200) {
+  //         final data = response.data['results'] as List<dynamic>;
+  //
+  //         for (final person in data) {
+  //           final personId = person['id'] as int;
+  //           final cachedBirthday = cache[personId];
+  //
+  //           if (cachedBirthday != null) {
+  //             final personFormattedDate = '${cachedBirthday.month}-${cachedBirthday.day}';
+  //             if (personFormattedDate == formattedDate) {
+  //               birthdays.add(BornToday.fromJson(person));
+  //             }
+  //           } else {
+  //             final personResponse = await _dio.get(
+  //               '$baseUrl/person/$personId',
+  //               queryParameters: {'api_key': apiKey},
+  //               options: Options(headers: {'Authorization': 'Bearer $token'}),
+  //             );
+  //
+  //             final birthdayString = personResponse.data['birthday'];
+  //             if (birthdayString != null) {
+  //               final birthday = DateTime.parse(birthdayString);
+  //               cache[personId] = birthday;
+  //               final personFormattedDate = '${birthday.month}-${birthday.day}';
+  //               if (personFormattedDate == formattedDate) {
+  //                 birthdays.add(BornToday.fromJson(personResponse.data));
+  //               }
+  //             }
+  //           }
+  //         }
+  //
+  //         if (page >= response.data['total_pages']) {
+  //           break; // Break the loop if all pages have been fetched
+  //         }
+  //
+  //         page++;
+  //       } else {
+  //         throw Exception('Failed to fetch birthdays. Status code: ${response.statusCode}');
+  //       }
+  //     }
+  //
+  //     return birthdays;
+  //   } catch (e, stackTrace) {
+  //     print('Error fetching born today: $e');
+  //     print(stackTrace);
+  //     throw Exception('Failed to fetch born today: $e');
+  //   }
+  // }
+
+
+  Future<List<BornToday>> getBornToday({int page = 1, int pageSize = 20, int totalPageLimit = 500}) async {
+    try {
+      final now = DateTime.now();
+      final formattedDate = '${now.month}-${now.day}';
+      final cache = <int, DateTime>{};
+
+      final List<BornToday> birthdays = [];
+
+      while (page <= totalPageLimit) {
+        final response = await _dio.get(
+          '$baseUrl/person/popular',
+          queryParameters: {'api_key': apiKey, 'page': page, 'page_size': pageSize},
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final data = response.data['results'] as List<dynamic>;
+
+          for (final person in data) {
+            final personId = person['id'] as int;
+            final cachedBirthday = cache[personId];
+
+            if (cachedBirthday != null) {
+              final personFormattedDate = '${cachedBirthday.month}-${cachedBirthday.day}';
+              if (personFormattedDate == formattedDate) {
+                birthdays.add(BornToday.fromJson(person));
+              }
+            } else {
+              final personResponse = await _dio.get(
+                '$baseUrl/person/$personId',
+                queryParameters: {'api_key': apiKey},
+                options: Options(headers: {'Authorization': 'Bearer $token'}),
+              );
+
+              final birthdayString = personResponse.data['birthday'];
+              if (birthdayString != null) {
+                final birthday = DateTime.parse(birthdayString);
+                cache[personId] = birthday;
+                final personFormattedDate = '${birthday.month}-${birthday.day}';
+                if (personFormattedDate == formattedDate) {
+                  birthdays.add(BornToday.fromJson(personResponse.data));
+                }
+              }
+            }
+          }
+        } else {
+          throw Exception('Failed to fetch birthdays. Status code: ${response.statusCode}');
+        }
+
+        page++;
+      }
+
+      return birthdays;
+    } catch (e, stackTrace) {
+      print('Error fetching born today: $e');
+      print(stackTrace);
+      throw Exception('Failed to fetch born today: $e');
+    }
+  }
+
+
+
 
   Future<MovieImage> getMovieImage(int movieId) async {
     try {

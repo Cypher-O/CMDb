@@ -115,20 +115,27 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             searchDelegate.searchVisible
                 ? searchWidgets.buildSearchListView()
                 : searchWidgets.buildRecentSearchListView(),
-            SectionTitle(
-              'Popular Movies',
-              MovieList(),
-              widget.popularMoviesList,
-            ),
-            SectionTitle(
-              'Top Rated Movies',
-              TopRatedMovieList(),
-              widget.topRatedMoviesList,
-            ),
-            SectionTitle(
-              'Trending TV Shows',
-              TvShowList(),
-              widget.trendingTvShowsList,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  SectionTitle(
+                    'Popular Movies',
+                    MovieList(),
+                    widget.popularMoviesList,
+                  ),
+                  SectionTitle(
+                    'Top Rated Movies',
+                    TopRatedMovieList(),
+                    widget.topRatedMoviesList,
+                  ),
+                  SectionTitle(
+                    'Trending TV Shows',
+                    TvShowList(),
+                    widget.trendingTvShowsList,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -198,16 +205,13 @@ class _SectionTitleState extends State<SectionTitle> {
         SizedBox(height: 10),
         SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 1, // Set the number of items to 1
-              itemBuilder: (BuildContext context, int index) {
-                return widget.itemWidget;
-              },
-            ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 1, // Set the number of items to 1
+            itemBuilder: (BuildContext context, int index) {
+              return widget.itemWidget;
+            },
           ),
         ),
         // SingleChildScrollView(

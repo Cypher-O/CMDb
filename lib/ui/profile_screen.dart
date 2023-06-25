@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(height: 20),
           CircleAvatar(
             radius: 60,
-            backgroundImage: NetworkImage('https://example.com/avatar.jpg'), // Replace with user's avatar image URL
+            backgroundImage: NetworkImage('https://th.bing.com/th/id/OIP.HDO6iVF_qfcQQzMDHTG2TQHaIe?w=159&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7.jpeg'), // Replace with user's avatar image URL
           ),
           SizedBox(height: 10),
           Text(

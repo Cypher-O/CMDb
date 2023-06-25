@@ -1,4 +1,5 @@
 import 'package:CMDb/model/cast_list.dart';
+import 'package:CMDb/model/production_company.dart';
 import 'package:CMDb/model/season.dart';
 import 'package:CMDb/model/tv_show_image.dart';
 import 'package:CMDb/model/tvshow.dart';
@@ -22,6 +23,7 @@ class TvShowDetail {
   final List<Season> seasons;
   List<Episode> episodes;
   final List<Genre> genres;
+  List<ProductionCompany> productionCompanies;
   List<TvShow> tvShow;
   String trailerId;
   TvShowImage tvShowImage;
@@ -41,6 +43,7 @@ class TvShowDetail {
     this.voteAverage,
     this.voteCount,
     this.genres,
+    this.productionCompanies,
     this.seasons,
     this.episodes, this.tvShow,});
 
@@ -71,6 +74,9 @@ class TvShowDetail {
       voteCount: json['vote_count']?.toString(),
       genres: (json['genres'] as List<dynamic>).map((genre) =>
           Genre.fromJson(genre)).toList(),
+      productionCompanies: (json['production_companies'] as List)
+          .map((company) => ProductionCompany.fromJson(company))
+          .toList(),
       seasons: (json['seasons'] as List<dynamic>)
           .map((season) => Season.fromJson(season))
           .toList(),
