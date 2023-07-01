@@ -15,6 +15,7 @@ import 'package:CMDb/model/born_today.dart';
 import 'package:CMDb/model/movie.dart';
 import 'package:CMDb/model/person.dart';
 import 'package:CMDb/model/tvshow.dart';
+import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/service/api_service.dart';
 import 'package:CMDb/ui/bottom_nav_bar.dart';
 import 'package:CMDb/ui/category_screen.dart';
@@ -22,6 +23,8 @@ import 'package:CMDb/ui/movie_detail_screen.dart';
 import 'package:CMDb/ui/profile_screen.dart';
 import 'package:CMDb/ui/search_bar.dart';
 import 'package:CMDb/ui/watchlist_screen.dart';
+import 'package:CMDb/widgets/bookmark_clipper.dart';
+import 'package:CMDb/widgets/bookmark_painter.dart';
 import 'package:CMDb/widgets/born_today_widget.dart';
 import 'package:CMDb/widgets/search_widget_listviews.dart';
 import 'package:CMDb/widgets/tvshow_list_widget.dart';
@@ -33,6 +36,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:CMDb/ui/discover_screen.dart';
 import 'package:CMDb/ui/search_delegate.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   // final MovieSearchDelegate searchDelegate = MovieSearchDelegate();
@@ -278,7 +282,45 @@ class _HomeScreenState extends State<HomeScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                ],
+                                  Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    child: Consumer<WatchlistModel>(
+                                      builder: (context, watchlistModel, child) {
+                                        bool isAdded = watchlistModel.movieWatchlist.contains(movie);
+
+                                        return GestureDetector(
+                                          onTap: () {
+                                            if (isAdded) {
+                                              watchlistModel.removeFromWatchlist(movie);
+                                            } else {
+                                              watchlistModel.addToWatchlist(movie);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 35.0,
+                                            height: 40.0,
+                                            child: ClipPath(
+                                              clipper: BookmarkClipper(),
+                                              child: CustomPaint(
+                                                painter: BookmarkPainter(
+                                                  isAdded ? Colors.orange : Colors.black45,
+                                                  isAdded ? Colors.black : Colors.white,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    isAdded ? Icons.check_rounded : Icons.add,
+                                                    size: 30.0,
+                                                    color: isAdded ? Colors.white : Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),],
                               ),
                             );
                           },
@@ -368,9 +410,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       } else
                                       if (state is BornTodayLoaded) {
                                         // List<BornToday> bornToday =
-                                        // List<BornToday> bornToday = [];
-                                        //     state.bornTodayList;
-                                        final bornToday = state.bornTodayList;
+                                        final List<BornToday> bornToday = state.bornTodayList;
+                                        // final bornToday = state.bornTodayList;
                                         // print(tvShows.length);
                                         return BornTodayListWidget(
                                             bornToday: bornToday);
@@ -491,10 +532,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           errorWidget: (context,
                                                                   url, error) =>
                                                               Container(
-                                                            width: 90,
-                                                            height: 90,
+                                                            width: 80,
+                                                            height: 80,
                                                             decoration:
                                                                 const BoxDecoration(
+                                                                  shape: BoxShape.circle,
                                                               image:
                                                                   DecorationImage(
                                                                 image:

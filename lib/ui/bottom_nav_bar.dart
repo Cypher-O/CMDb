@@ -47,14 +47,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             GButton(
               icon: Icons.search,
-              text: 'Search',
+              text: 'Discover',
               onPressed: () {
                 widget.onTabChanged?.call(1);
               },
             ),
             GButton(
-              icon: Icons.favorite_border,
-              text: 'Likes',
+              icon: Icons.bookmark,
+              text: 'WatchList',
               onPressed: () {
                 widget.onTabChanged?.call(2);
               },

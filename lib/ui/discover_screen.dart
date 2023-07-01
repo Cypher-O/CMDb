@@ -3,17 +3,21 @@ import 'package:CMDb/bloc/moviebloc/movie_bloc_event.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_event.dart';
 import 'package:CMDb/model/movie.dart';
 import 'package:CMDb/model/tvshow.dart';
+import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/ui/rating_widget.dart';
 import 'package:CMDb/ui/search_bar.dart';
 import 'package:CMDb/ui/search_delegate.dart';
 import 'package:CMDb/ui/tv_detail_screen.dart';
 import 'package:CMDb/ui/view_all.dart';
+import 'package:CMDb/widgets/bookmark_clipper.dart';
+import 'package:CMDb/widgets/bookmark_painter.dart';
 import 'package:CMDb/widgets/search_widget_listviews.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
 import '../bloc/moviebloc/movie_bloc.dart';
 import '../bloc/moviebloc/movie_bloc_state.dart';
 import '../bloc/tvshowbloc/tvshow_bloc.dart';
@@ -65,7 +69,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(Icons.account_circle_outlined),
+          leading: Icon(Icons.find_in_page_outlined),
           title: Text("Discover"),
           actions: [
             Container(
@@ -333,12 +337,40 @@ class MovieList extends StatelessWidget {
                           Positioned(
                             top: 0,
                             left: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black26,
-                              ),
-                              child: const Icon(Icons.add, size: 30.0),
+                            child: Consumer<WatchlistModel>(
+                              builder: (context, watchlistModel, child) {
+                                bool isAdded = watchlistModel.movieWatchlist.contains(movie);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (isAdded) {
+                                      watchlistModel.removeFromWatchlist(movie);
+                                    } else {
+                                      watchlistModel.addToWatchlist(movie);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 35.0,
+                                    height: 40.0,
+                                    child: ClipPath(
+                                      clipper: BookmarkClipper(),
+                                      child: CustomPaint(
+                                        painter: BookmarkPainter(
+                                          isAdded ? Colors.orange : Colors.black45,
+                                          isAdded ? Colors.black : Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            isAdded ? Icons.check_rounded : Icons.add,
+                                            size: 30.0,
+                                            color: isAdded ? Colors.white : Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -490,12 +522,40 @@ class TopRatedMovieList extends StatelessWidget {
                           Positioned(
                             top: 0,
                             left: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black26,
-                              ),
-                              child: const Icon(Icons.add, size: 30.0),
+                            child: Consumer<WatchlistModel>(
+                              builder: (context, watchlistModel, child) {
+                                bool isAdded = watchlistModel.movieWatchlist.contains(movie);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (isAdded) {
+                                      watchlistModel.removeFromWatchlist(movie);
+                                    } else {
+                                      watchlistModel.addToWatchlist(movie);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 35.0,
+                                    height: 40.0,
+                                    child: ClipPath(
+                                      clipper: BookmarkClipper(),
+                                      child: CustomPaint(
+                                        painter: BookmarkPainter(
+                                          isAdded ? Colors.orange : Colors.black45,
+                                          isAdded ? Colors.black : Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            isAdded ? Icons.check_rounded : Icons.add,
+                                            size: 30.0,
+                                            color: isAdded ? Colors.white : Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -664,12 +724,40 @@ class TvShowList extends StatelessWidget {
                                 Positioned(
                                   top: 0,
                                   left: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.black26,
-                                    ),
-                                    child: const Icon(Icons.add, size: 30.0),
+                                  child: Consumer<WatchlistModel>(
+                                    builder: (context, watchlistModel, child) {
+                                      bool isAdded = watchlistModel.tvShowWatchlist.contains(tvShow);
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          if (isAdded) {
+                                            watchlistModel.removeFromWatchlistTvShow(tvShow);
+                                          } else {
+                                            watchlistModel.addToWatchlistTvShow(tvShow);
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 35.0,
+                                          height: 40.0,
+                                          child: ClipPath(
+                                            clipper: BookmarkClipper(),
+                                            child: CustomPaint(
+                                              painter: BookmarkPainter(
+                                                isAdded ? Colors.orange : Colors.black45,
+                                                isAdded ? Colors.black : Colors.white,
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  isAdded ? Icons.check_rounded : Icons.add,
+                                                  size: 30.0,
+                                                  color: isAdded ? Colors.white : Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

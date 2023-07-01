@@ -47,4 +47,20 @@ class TvShow {
         voteCount: json['vote_count'],
         voteAverage: json['vote_average'].toString());
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'backdrop_path': backdropPath,
+      'id': id,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'overview': overview,
+      'popularity': popularity,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
+      'name': name,
+      'video': video,
+      'vote_count': voteCount,
+      'vote_average': voteAverage,
+    };
+  }
 }

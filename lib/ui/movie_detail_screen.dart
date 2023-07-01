@@ -18,6 +18,8 @@ import 'package:CMDb/model/movie.dart';
 import 'package:CMDb/model/movie_detail.dart';
 import 'package:CMDb/model/review.dart';
 import 'package:CMDb/model/screen_shot.dart';
+import 'package:CMDb/model/watch_list.dart';
+import 'package:CMDb/ui/animation.dart';
 import 'package:CMDb/widgets/recommended_movie_widgets.dart';
 import 'package:CMDb/widgets/review_movie_widget.dart';
 import 'package:CMDb/widgets/similar_movie_widgets.dart';
@@ -29,6 +31,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -353,6 +356,32 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
                       ),
                     ],
                   ),
+                  actions: [
+                    Consumer<WatchlistModel>(
+                      builder: (context, watchlistModel, child) {
+                        bool isAdded = watchlistModel.movieWatchlist.contains(widget.movie);
+
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isAdded) {
+                                watchlistModel.removeFromWatchlist(widget.movie);
+                              } else {
+                                watchlistModel.addToWatchlist(widget.movie);
+                              }
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              isAdded ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
+                              color: isAdded ? Colors.orange : Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ];
             },
@@ -387,6 +416,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen>
                     Container(
                       child: Column(
                         children: [
+
                           ReadMoreText(
                             movieDetail.overview,
                             trimLines: showMore ? null : 2,

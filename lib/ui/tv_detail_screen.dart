@@ -16,8 +16,11 @@ import 'package:CMDb/model/review.dart';
 import 'package:CMDb/model/screen_shot.dart';
 import 'package:CMDb/model/tvshow.dart';
 import 'package:CMDb/model/tvshow_detail.dart';
+import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/service/api_service.dart';
 import 'package:CMDb/ui/season_dropdown.dart';
+import 'package:CMDb/widgets/bookmark_clipper.dart';
+import 'package:CMDb/widgets/bookmark_painter.dart';
 import 'package:CMDb/widgets/build_episode_list.dart';
 import 'package:CMDb/widgets/recommended_tvshow_widget.dart';
 import 'package:CMDb/widgets/review_tvshow_widget.dart';
@@ -29,6 +32,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/episode.dart';
@@ -256,6 +260,32 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                       ),
                     ],
                   ),
+                  actions: [
+                      Consumer<WatchlistModel>(
+                        builder: (context, watchlistModel, child) {
+                          bool isAdded = watchlistModel.tvShowWatchlist.contains(widget.tvShow);
+
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (isAdded) {
+                                  watchlistModel.removeFromWatchlistTvShow(widget.tvShow);
+                                } else {
+                                  watchlistModel.addToWatchlistTvShow(widget.tvShow);
+                                }
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                isAdded ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
+                                color: isAdded ? Colors.orange : Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ];
             },

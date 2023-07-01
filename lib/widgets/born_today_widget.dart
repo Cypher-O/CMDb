@@ -1,11 +1,12 @@
 import 'package:CMDb/bloc/borntodaybloc/born_today_bloc.dart';
 import 'package:CMDb/bloc/borntodaybloc/born_today_event.dart';
 import 'package:CMDb/model/born_today.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BornTodayListWidget extends StatelessWidget {
-  List<BornToday> bornToday = [];
+  final List<BornToday> bornToday;
 
   BornTodayListWidget({Key key, this.bornToday}) : super(key: key);
 
@@ -58,10 +59,14 @@ class BornTodayListWidget extends StatelessWidget {
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8),
                                   ),
-                                  child: Image.network(
-                                    'https://image.tmdb.org/t/p/w200${birthday.profilePath}',
+                                  child: CachedNetworkImage(
+                                    imageUrl: 'https://image.tmdb.org/t/p/w200${birthday.profilePath}',
                                     fit: BoxFit.cover,
                                   ),
+                                  // child: Image.network(
+                                  //   'https://image.tmdb.org/t/p/w200${birthday.profilePath}',
+                                  //   fit: BoxFit.cover,
+                                  // ),
                                 ),
                               ),
                               Padding(
