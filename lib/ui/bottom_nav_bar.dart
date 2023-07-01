@@ -60,8 +60,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               },
             ),
             GButton(
-              icon: Icons.person,
-              text: 'Profile',
+              icon: Icons.settings,
+              text: 'Settings',
               onPressed: () {
                 widget.onTabChanged?.call(3);
               },

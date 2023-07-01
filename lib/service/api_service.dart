@@ -232,7 +232,7 @@ class ApiService {
 
   Future<List<Person>> getTrendingPerson() async {
     try {
-      final response = await _dio.get('$baseUrl/trending/person/week?$apiKey');
+      final response = await _dio.get('$baseUrl/trending/person/day?$apiKey');
       var persons = response.data['results'] as List;
       List<Person> personList = persons.map((p) => Person.fromJson(p)).toList();
       // print(persons);

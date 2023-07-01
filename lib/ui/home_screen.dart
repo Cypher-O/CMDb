@@ -20,8 +20,8 @@ import 'package:CMDb/service/api_service.dart';
 import 'package:CMDb/ui/bottom_nav_bar.dart';
 import 'package:CMDb/ui/category_screen.dart';
 import 'package:CMDb/ui/movie_detail_screen.dart';
-import 'package:CMDb/ui/profile_screen.dart';
 import 'package:CMDb/ui/search_bar.dart';
+import 'package:CMDb/ui/settings_screen.dart';
 import 'package:CMDb/ui/watchlist_screen.dart';
 import 'package:CMDb/widgets/bookmark_clipper.dart';
 import 'package:CMDb/widgets/bookmark_painter.dart';
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     DiscoverScreen(),
     WatchListScreen(),
-    ProfileScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -483,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child:
                                                             CachedNetworkImage(
                                                           imageUrl:
-                                                              'https://image.tmdb.org/t/p/w200${person.profilePath}',
+                                                              'https://image.tmdb.org/t/p/w500${person.profilePath}',
                                                           imageBuilder: (context,
                                                               imageProvider) {
                                                             return Container(

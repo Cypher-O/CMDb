@@ -2,6 +2,7 @@ import 'package:CMDb/model/watch_list.dart';
 import 'package:flutter/material.dart';
 import 'package:CMDb/ui/home_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return ChangeNotifierProvider(
       create: (context) => WatchlistModel(),
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'CMDb',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

@@ -60,7 +60,7 @@ class BornTodayListWidget extends StatelessWidget {
                                     topRight: Radius.circular(8),
                                   ),
                                   child: CachedNetworkImage(
-                                    imageUrl: 'https://image.tmdb.org/t/p/w200${birthday.profilePath}',
+                                    imageUrl: 'https://image.tmdb.org/t/p/w500${birthday.profilePath}',
                                     fit: BoxFit.cover,
                                   ),
                                   // child: Image.network(
