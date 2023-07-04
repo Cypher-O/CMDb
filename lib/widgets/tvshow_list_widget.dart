@@ -70,87 +70,81 @@ class TvShowListWidget extends StatelessWidget {
                       },
                       child: Stack(
                         children: [
-                          Hero(
-                            tag:
-                            "tvShowPoster${tvShow
-                                .id}",
+                          ClipRRect(
                             child:
-                            ClipRRect(
-                              child:
-                              CachedNetworkImage(
-                                imageUrl:
-                                'https://image.tmdb.org/t/p/original/${tvShow
-                                    .posterPath}',
-                                imageBuilder:
-                                    (context,
-                                    imageProvider) {
-                                  return Container(
+                            CachedNetworkImage(
+                              imageUrl:
+                              'https://image.tmdb.org/t/p/original/${tvShow
+                                  .posterPath}',
+                              imageBuilder:
+                                  (context,
+                                  imageProvider) {
+                                return Container(
+                                  width:
+                                  165,
+                                  height:
+                                  250,
+                                  decoration:
+                                  BoxDecoration(
+                                    borderRadius:
+                                    const BorderRadius
+                                        .all(
+                                      Radius
+                                          .circular(
+                                          12),
+                                    ),
+                                    image:
+                                    DecorationImage(
+                                      image:
+                                      imageProvider,
+                                      fit:
+                                      BoxFit
+                                          .cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                              placeholder:
+                                  (context,
+                                  url) =>
+                                  Container(
                                     width:
-                                    165,
+                                    180,
+                                    height:
+                                    250,
+                                    child:
+                                    Center(
+                                      child: Platform
+                                          .isAndroid
+                                          ? Container(
+                                        child: const LoadingIndicator(
+                                          indicatorType: Indicator
+                                              .lineSpinFadeLoader,
+                                        ),
+                                        height: 15,
+                                      )
+                                          : const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                              errorWidget: (
+                                  context,
+                                  url,
+                                  error) =>
+                                  Container(
+                                    width:
+                                    180,
                                     height:
                                     250,
                                     decoration:
-                                    BoxDecoration(
-                                      borderRadius:
-                                      const BorderRadius
-                                          .all(
-                                        Radius
-                                            .circular(
-                                            12),
-                                      ),
+                                    const BoxDecoration(
                                       image:
                                       DecorationImage(
                                         image:
-                                        imageProvider,
-                                        fit:
-                                        BoxFit
-                                            .cover,
+                                        AssetImage(
+                                            'assets/images/image_not_found.jpeg'),
                                       ),
                                     ),
-                                  );
-                                },
-                                placeholder:
-                                    (context,
-                                    url) =>
-                                    Container(
-                                      width:
-                                      180,
-                                      height:
-                                      250,
-                                      child:
-                                      Center(
-                                        child: Platform
-                                            .isAndroid
-                                            ? Container(
-                                          child: const LoadingIndicator(
-                                            indicatorType: Indicator
-                                                .lineSpinFadeLoader,
-                                          ),
-                                          height: 15,
-                                        )
-                                            : const CupertinoActivityIndicator(),
-                                      ),
-                                    ),
-                                errorWidget: (
-                                    context,
-                                    url,
-                                    error) =>
-                                    Container(
-                                      width:
-                                      180,
-                                      height:
-                                      250,
-                                      decoration:
-                                      const BoxDecoration(
-                                        image:
-                                        DecorationImage(
-                                          image:
-                                          AssetImage(
-                                              'assets/images/image_not_found.jpeg'),
-                                        ),
-                                      ),
-                                    ),
-                              ),
+                                  ),
                             ),
                           ),
                           Positioned(

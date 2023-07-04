@@ -158,29 +158,26 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         background: ClipPath(
-                          child: Hero(
-                            tag: 'tvShowPoster${widget.tvShow.id}',
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://image.tmdb.org/t/p/original/${tvShowDetail.posterPath}',
-                              height: MediaQuery.of(context).size.height / 2,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Platform.isAndroid
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(150.0),
-                                      child: LoadingIndicator(
-                                        indicatorType:
-                                            Indicator.lineSpinFadeLoader,
-                                      ),
-                                    )
-                                  : const CupertinoActivityIndicator(),
-                              errorWidget: (context, url, error) => Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/image_not_found.jpeg'),
-                                  ),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://image.tmdb.org/t/p/original/${tvShowDetail.posterPath}',
+                            height: MediaQuery.of(context).size.height / 2,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Platform.isAndroid
+                                ? const Padding(
+                                    padding: EdgeInsets.all(150.0),
+                                    child: LoadingIndicator(
+                                      indicatorType:
+                                          Indicator.lineSpinFadeLoader,
+                                    ),
+                                  )
+                                : const CupertinoActivityIndicator(),
+                            errorWidget: (context, url, error) => Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/image_not_found.jpeg'),
                                 ),
                               ),
                             ),

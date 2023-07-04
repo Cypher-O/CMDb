@@ -26,6 +26,7 @@ import 'package:CMDb/ui/watchlist_screen.dart';
 import 'package:CMDb/widgets/bookmark_clipper.dart';
 import 'package:CMDb/widgets/bookmark_painter.dart';
 import 'package:CMDb/widgets/born_today_widget.dart';
+import 'package:CMDb/widgets/glowing_text.dart';
 import 'package:CMDb/widgets/search_widget_listviews.dart';
 import 'package:CMDb/widgets/tvshow_list_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -113,19 +114,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ? AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: Icon(
-                  Icons.menu_rounded,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'cmdB'.toUpperCase(),
-                  style: Theme.of(context).textTheme.caption.copyWith(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'mulish',
-                      ),
-                ),
+                // leading: Icon(
+                //   Icons.menu_rounded,
+                //   color: Colors.white,
+                // ),
+                // title: Text(
+                //   'cmdB'.toUpperCase(),
+                //   style: Theme.of(context).textTheme.caption.copyWith(
+                //         color: Colors.white,
+                //         fontSize: 20,
+                //         fontWeight: FontWeight.bold,
+                //         fontFamily: 'mulish',
+                //       ),
+                // ),
+          title: GlowingText(),
                 actions: [
                   Container(
                     child: IconButton(
@@ -433,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 30,
                               ),
                               Text(
-                                'Trending persons on this week'.toUpperCase(),
+                                'People trending today'.toUpperCase(),
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
