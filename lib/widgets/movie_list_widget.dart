@@ -10,8 +10,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-
 
 class MovieListWidget extends StatelessWidget {
   final List<Movie> movieList;
@@ -38,10 +38,14 @@ class MovieListWidget extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MovieDetailScreen(movie: movie),
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      child: MovieDetailScreen(movie: movie),
                     ),
+                    // MaterialPageRoute(
+                    //   builder: (context) =>
+                    //       MovieDetailScreen(movie: movie),
+                    // ),
                   );
                 },
                 child: Stack(
@@ -49,7 +53,7 @@ class MovieListWidget extends StatelessWidget {
                     ClipRRect(
                       child: CachedNetworkImage(
                         imageUrl:
-                        'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
+                            'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
                         imageBuilder: (context, imageProvider) {
                           return Container(
                             width: 165,
@@ -71,10 +75,12 @@ class MovieListWidget extends StatelessWidget {
                           child: Center(
                             child: Platform.isAndroid
                                 ? Container(
-                              child: const LoadingIndicator(
-                                indicatorType: Indicator.ballSpinFadeLoader,
-                              ), height: 15,
-                            )
+                                    child: const LoadingIndicator(
+                                      indicatorType:
+                                          Indicator.ballSpinFadeLoader,
+                                    ),
+                                    height: 15,
+                                  )
                                 : const CupertinoActivityIndicator(),
                           ),
                         ),
@@ -96,7 +102,8 @@ class MovieListWidget extends StatelessWidget {
                       child: Consumer<WatchlistModel>(
                         builder: (context, watchlistModel, child) {
                           // bool isAdded = watchlistModel.movieWatchlist.any((movie) => movie.id == movie.id);
-                          bool isAdded = watchlistModel.movieWatchlist.contains(movie);
+                          bool isAdded =
+                              watchlistModel.movieWatchlist.contains(movie);
 
                           return GestureDetector(
                             onTap: () {
@@ -120,7 +127,8 @@ class MovieListWidget extends StatelessWidget {
                                     child: Icon(
                                       isAdded ? Icons.check_rounded : Icons.add,
                                       size: 30.0,
-                                      color: isAdded ? Colors.white : Colors.white,
+                                      color:
+                                          isAdded ? Colors.white : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -130,7 +138,6 @@ class MovieListWidget extends StatelessWidget {
                         },
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -167,7 +174,8 @@ class MovieListWidget extends StatelessWidget {
                     //   color: Colors.yellow,
                     //   size: 14,
                     // ),
-                    SizedBox(width: 4), // Adjust the spacing between the icon and text
+                    SizedBox(width: 4),
+                    // Adjust the spacing between the icon and text
                     Text(
                       '${movie.voteAverage}\t/\t10',
                       style: TextStyle(

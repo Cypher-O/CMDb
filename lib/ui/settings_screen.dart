@@ -1,6 +1,8 @@
 import 'package:CMDb/ui/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_route_animator/page_route_animator.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key key}) : super(key: key);
@@ -36,11 +38,26 @@ class SettingsScreen extends StatelessWidget {
                   title: Text('Profile'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    Get.to(
-                      () => ProfileScreen(),
-                      transition: Transition.rightToLeftWithFade,
-                      // duration: Duration(milliseconds: 500),
+                    Navigator.push(
+                      context,
+                      PageRouteAnimator(
+                        child: const ProfileScreen(), currentChild: this,
+                        routeAnimation: RouteAnimation.rightToLeftJoined,
+                        settings: const RouteSettings(arguments: SettingsScreen()),
+                        curve: Curves.easeOut,
+                        duration: const Duration(milliseconds: 600),
+                        reverseDuration: const Duration(milliseconds: 600),
+                      ),
+                      // PageTransition(
+                      //   type: PageTransitionType.rightToLeftWithFade,
+                      //   child: ProfileScreen(), duration: Duration(milliseconds: 300), curve: Curves.easeInOut,
+                      // ),
                     );
+                    // Get.to(
+                    //   () => ProfileScreen(),
+                    //   transition: Transition.rightToLeftWithFade,
+                    //   // duration: Duration(milliseconds: 500),
+                    // );
                   },
                 ),
               ),

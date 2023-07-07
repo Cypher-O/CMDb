@@ -4,39 +4,42 @@ import 'package:CMDb/ui/home_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
-// void main() {
-//   final binding = WidgetsFlutterBinding.ensureInitialized();
-//   FlutterNativeSplash.preserve(widgetsBinding: binding);
-//   // ...
-//   runApp(const MyApp());
-//   FlutterNativeSplash.remove();
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeData = ThemeData(
+      brightness: Brightness.dark,
+      primarySwatch: Colors.orange,
+      accentColor: Colors.white,
+    );
+
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: themeData.scaffoldBackgroundColor,
+        systemNavigationBarIconBrightness:
+        themeData.brightness == Brightness.light
+            ? Brightness.dark
+            : Brightness.light,
+      ),
+    );
+
     return ChangeNotifierProvider(
       create: (context) => WatchlistModel(),
-      child: GetMaterialApp(
+      child: MaterialApp(
         title: 'CMDb',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.orange,
-          accentColor: Colors.white,
-        ),
-        home:  HomeScreen(),
+        theme: themeData,
+        home: HomeScreen(),
       ),
     );
   }
 }
+
