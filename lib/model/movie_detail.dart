@@ -20,6 +20,7 @@ class MovieDetail {
   List<Genre> genres;
   List<ProductionCompany> productionCompanies;
   String trailerId;
+  // List<String> trailerId;
   MovieImage movieImage;
   List<Cast> castList;
 

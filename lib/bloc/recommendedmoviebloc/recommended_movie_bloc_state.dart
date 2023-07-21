@@ -1,6 +1,5 @@
 
 import 'package:CMDb/model/movie.dart';
-import 'package:CMDb/model/tvshow.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RecommendedMovieState extends Equatable {

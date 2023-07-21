@@ -291,6 +291,25 @@ class ApiService {
   //         'Exception occurred: $error with stacktrace: $stacktrace');
   //   }
   // }
+
+
+
+
+  // Future<List<String>> getYoutubeId(int id) async {
+  //   try {
+  //     final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
+  //     var results = response.data['results'];
+  //     if (results.isNotEmpty) {
+  //       List<String> youtubeIds = results.map((result) => result['key']).toList();
+  //       return youtubeIds;
+  //     } else {
+  //       return []; // Return an empty list when no YouTube videos are found
+  //     }
+  //   } catch (error, stacktrace) {
+  //     throw Exception('Exception occurred: $error with stacktrace: $stacktrace');
+  //   }
+  // }
+
   Future<String> getYoutubeId(int id) async {
     try {
       final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');

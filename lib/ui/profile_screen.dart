@@ -12,8 +12,23 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text("Profile"),
         automaticallyImplyLeading: true,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey,
+                  width: 0.1,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(

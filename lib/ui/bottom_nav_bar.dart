@@ -23,6 +23,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Container(
       // key: _customNavBarKey,
       // height: customNavigationBarHeight,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.grey,
+            width: 0.1,
+          ),
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         child: GNav(

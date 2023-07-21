@@ -35,9 +35,9 @@ class TvShowReviewWidget extends StatelessWidget {
           ),
         )
             : ListView.builder(
-          itemCount: tvShowReviewList.length,
+          itemCount: 1,
           itemBuilder: (context, index) {
-            Review review = tvShowReviewList[index];
+            Review review = tvShowReviewList.first;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,7 +112,7 @@ class TvShowReviewWidget extends StatelessWidget {
                   review.content,
                   style: TextStyle(fontSize: 16.0),
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: 10.0),
               ],
             );
           },

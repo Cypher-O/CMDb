@@ -1,6 +1,5 @@
 import 'package:CMDb/model/movie.dart';
 import 'package:equatable/equatable.dart';
-import 'package:CMDb/model/tvshow.dart';
 
 abstract class SimilarMovieState extends Equatable {
   const SimilarMovieState();

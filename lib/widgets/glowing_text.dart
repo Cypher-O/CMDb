@@ -41,7 +41,7 @@ class _GlowingTextState extends State<GlowingText> with SingleTickerProviderStat
       builder: (context, child) {
         return Text(
           'cmdB'.toUpperCase(),
-          style: Theme.of(context).textTheme.caption.copyWith(
+          style: Theme.of(context).textTheme.bodySmall.copyWith(
             fontSize: 23,
             fontWeight: FontWeight.bold,
             fontFamily: 'mulish',

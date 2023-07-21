@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:CMDb/bloc/borntodaybloc/born_today_bloc.dart';
 import 'package:CMDb/bloc/borntodaybloc/born_today_event.dart';
 import 'package:CMDb/bloc/borntodaybloc/born_today_state.dart';
@@ -16,11 +17,12 @@ import 'package:CMDb/model/movie.dart';
 import 'package:CMDb/model/person.dart';
 import 'package:CMDb/model/tvshow.dart';
 import 'package:CMDb/model/watch_list.dart';
-import 'package:CMDb/service/api_service.dart';
 import 'package:CMDb/ui/bottom_nav_bar.dart';
 import 'package:CMDb/ui/category_screen.dart';
+import 'package:CMDb/ui/discover_screen.dart';
 import 'package:CMDb/ui/movie_detail_screen.dart';
 import 'package:CMDb/ui/search_bar.dart';
+import 'package:CMDb/ui/search_delegate.dart';
 import 'package:CMDb/ui/settings_screen.dart';
 import 'package:CMDb/ui/watchlist_screen.dart';
 import 'package:CMDb/widgets/bookmark_clipper.dart';
@@ -35,8 +37,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:CMDb/ui/discover_screen.dart';
-import 'package:CMDb/ui/search_delegate.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // int currentPage = 0;
 
   // final TvShow tvShow;
-  final _apiService = ApiService();
+  // final _apiService = ApiService();
 
   // final searchDelegate = MovieSearchDelegate();
 
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 //         fontFamily: 'mulish',
                 //       ),
                 // ),
-          title: GlowingText(),
+                title: GlowingText(),
                 actions: [
                   Container(
                     child: IconButton(
@@ -146,32 +146,61 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
+                // bottom: searchDelegate.searchVisible
+                //     ? SearchBar(
+                //         onSearchTextChanged: (text) {
+                //           setState(() {
+                //             searchDelegate.updateSearchResults(text);
+                //           });
+                //         },
+                //         // onSearchTextChanged: searchDelegate.updateSearchResults,
+                //         onClearButtonPressed: () {
+                //           setState(() {
+                //             searchDelegate.searchController
+                //                 .clear(); // Clear the search text
+                //             searchDelegate.searchResults =
+                //                 []; // Clear the search results
+                //           });
+                //         },
+                //         onBackButtonPressed: () {
+                //           setState(() {
+                //             searchDelegate.searchVisible =
+                //                 false; // Dispose of the bottom in the AppBar
+                //             searchDelegate.searchResults =
+                //                 []; // Clear the search results
+                //           });
+                //         },
+                //       )
+                //     : null,
                 bottom: searchDelegate.searchVisible
                     ? SearchBar(
-                        onSearchTextChanged: (text) {
-                          setState(() {
-                            searchDelegate.updateSearchResults(text);
-                          });
-                        },
-                        // onSearchTextChanged: searchDelegate.updateSearchResults,
+                        onSearchTextChanged: searchDelegate.updateSearchResults,
                         onClearButtonPressed: () {
                           setState(() {
-                            searchDelegate.searchController
-                                .clear(); // Clear the search text
-                            searchDelegate.searchResults =
-                                []; // Clear the search results
+                            searchDelegate.searchController.clear();
+                            searchDelegate.searchResults = [];
                           });
                         },
                         onBackButtonPressed: () {
                           setState(() {
-                            searchDelegate.searchVisible =
-                                false; // Dispose of the bottom in the AppBar
-                            searchDelegate.searchResults =
-                                []; // Clear the search results
+                            searchDelegate.searchVisible = false;
+                            searchDelegate.searchResults = [];
                           });
                         },
                       )
-                    : null,
+                    : PreferredSize(
+                        preferredSize: Size.fromHeight(1),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.grey,
+                                width: 0.1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
               )
             : null,
         body: IndexedStack(
@@ -181,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
             for (int i = 0; i < _widgetOptions.length; i++) _widgetOptions[i],
           ],
         ),
+
         bottomNavigationBar: BottomNavBar(
           selectedIndex: _selectedIndex,
           onTabChanged: _onItemTapped,
@@ -218,6 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 10.0,),
                         CarouselSlider.builder(
                           itemCount: movies.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -288,15 +319,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                     top: 0,
                                     left: 0,
                                     child: Consumer<WatchlistModel>(
-                                      builder: (context, watchlistModel, child) {
-                                        bool isAdded = watchlistModel.movieWatchlist.contains(movie);
+                                      builder:
+                                          (context, watchlistModel, child) {
+                                        bool isAdded = watchlistModel
+                                            .movieWatchlist
+                                            .contains(movie);
 
                                         return GestureDetector(
                                           onTap: () {
                                             if (isAdded) {
-                                              watchlistModel.removeFromWatchlist(movie);
+                                              watchlistModel
+                                                  .removeFromWatchlist(movie);
                                             } else {
-                                              watchlistModel.addToWatchlist(movie);
+                                              watchlistModel
+                                                  .addToWatchlist(movie);
                                             }
                                           },
                                           child: Container(
@@ -306,14 +342,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                               clipper: BookmarkClipper(),
                                               child: CustomPaint(
                                                 painter: BookmarkPainter(
-                                                  isAdded ? Colors.orange : Colors.black45,
-                                                  isAdded ? Colors.black : Colors.white,
+                                                  isAdded
+                                                      ? Colors.orange
+                                                      : Colors.black45,
+                                                  isAdded
+                                                      ? Colors.black
+                                                      : Colors.white,
                                                 ),
                                                 child: Center(
                                                   child: Icon(
-                                                    isAdded ? Icons.check_rounded : Icons.add,
+                                                    isAdded
+                                                        ? Icons.check_rounded
+                                                        : Icons.add,
                                                     size: 30.0,
-                                                    color: isAdded ? Colors.white : Colors.white,
+                                                    color: isAdded
+                                                        ? Colors.white
+                                                        : Colors.white,
                                                   ),
                                                 ),
                                               ),
@@ -322,7 +366,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         );
                                       },
                                     ),
-                                  ),],
+                                  ),
+                                ],
                               ),
                             );
                           },
@@ -351,13 +396,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              Text(
-                                'top rated tv show'.toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontFamily: 'mulish',
+                              IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    VerticalDivider(
+                                      thickness: 3.0,
+                                      width: 0.0,
+                                      color: Colors.orange,
+                                    ),
+                                    SizedBox(width: 8.0),
+                                    Text(
+                                      'top rated tv show'.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontFamily: 'mulish',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(
@@ -409,10 +467,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                               : const CupertinoActivityIndicator(),
                                         );
-                                      } else
-                                      if (state is BornTodayLoaded) {
+                                      } else if (state is BornTodayLoaded) {
                                         // List<BornToday> bornToday =
-                                        final List<BornToday> bornToday = state.bornTodayList;
+                                        final List<BornToday> bornToday =
+                                            state.bornTodayList;
                                         // final bornToday = state.bornTodayList;
                                         // print(tvShows.length);
                                         return BornTodayListWidget(
@@ -434,13 +492,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              Text(
-                                'People trending today'.toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontFamily: 'mulish',
+                              IntrinsicHeight(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    VerticalDivider(
+                                      thickness: 3.0,
+                                      width: 0.0,
+                                      color: Colors.orange,
+                                    ),
+                                    SizedBox(width: 8.0),
+                                    Text(
+                                      'People trending today'.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontFamily: 'mulish',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(
@@ -538,7 +609,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             height: 80,
                                                             decoration:
                                                                 const BoxDecoration(
-                                                                  shape: BoxShape.circle,
+                                                              shape: BoxShape
+                                                                  .circle,
                                                               image:
                                                                   DecorationImage(
                                                                 image:

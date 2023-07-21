@@ -135,13 +135,22 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
           height: 30,
         ),
         Container(
-          child: Text(
-            'now playing'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontFamily: 'mulish',
+          child: IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                VerticalDivider(thickness: 3.0, width: 0.0, color: Colors.orange,),
+                SizedBox(width: 8.0),
+                Text(
+                  'now playing'.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'mulish',
+                  ),
+                ),
+              ],
             ),
           ),
         ),SizedBox(height: 10,),

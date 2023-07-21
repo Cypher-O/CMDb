@@ -10,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class MovieListWidget extends StatelessWidget {
@@ -38,14 +37,10 @@ class MovieListWidget extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    PageTransition(
-                      type: PageTransitionType.fade,
-                      child: MovieDetailScreen(movie: movie),
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MovieDetailScreen(movie: movie),
                     ),
-                    // MaterialPageRoute(
-                    //   builder: (context) =>
-                    //       MovieDetailScreen(movie: movie),
-                    // ),
                   );
                 },
                 child: Stack(

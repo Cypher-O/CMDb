@@ -34,9 +34,9 @@ class MovieReviewWidget extends StatelessWidget {
           ),
         )
             :  ListView.builder(
-          itemCount: movieReviewList.length,
+          itemCount: 1,
           itemBuilder: (context, index) {
-            Review review = movieReviewList[index];
+            Review review = movieReviewList.first;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -111,7 +111,7 @@ class MovieReviewWidget extends StatelessWidget {
                   review.content,
                   style: TextStyle(fontSize: 16.0),
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: 10.0),
               ],
             );
           },

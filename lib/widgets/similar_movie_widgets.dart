@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:CMDb/bloc/similarmoviebloc/similar_movie_bloc.dart';
 import 'package:CMDb/bloc/similarmoviebloc/similar_movie_bloc_event.dart';
-import 'package:CMDb/bloc/similartvshowbloc/similar_tvshow_bloc.dart';
-import 'package:CMDb/bloc/similartvshowbloc/similar_tvshow_bloc_event.dart';
 import 'package:CMDb/model/movie.dart';
+import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/ui/movie_detail_screen.dart';
 import 'package:CMDb/ui/rating_widget.dart';
-import 'package:CMDb/ui/tv_detail_screen.dart';
+import 'package:CMDb/widgets/bookmark_clipper.dart';
+import 'package:CMDb/widgets/bookmark_painter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-
-import '../model/tvshow.dart';
+import 'package:provider/provider.dart';
 
 class SimilarMovieWidget extends StatelessWidget {
   final List<Movie> similarMovies;
@@ -48,7 +47,7 @@ class SimilarMovieWidget extends StatelessWidget {
                   (context, index) {
                 Movie movie =
                 similarMovies[index];
-                print('Vote Average for Similar/Similar Movie: ${movie.voteAverage}');
+                // print('Vote Average for Similar/Similar Movie: ${movie.voteAverage}');
                 // print("Recomended similar tvshows or series$similarTvShows.length");
                 return Column(
                   crossAxisAlignment:
@@ -156,19 +155,43 @@ class SimilarMovieWidget extends StatelessWidget {
                           Positioned(
                             top: 0,
                             left: 0,
-                            child:
-                            Container(
-                              decoration:
-                              BoxDecoration(
-                                shape: BoxShape
-                                    .circle,
-                                color: Colors
-                                    .black26,
-                              ),
-                              child: const Icon(
-                                  Icons.add,
-                                  size:
-                                  30.0),
+                            child: Consumer<WatchlistModel>(
+                              builder: (context, watchlistModel, child) {
+                                // bool isAdded = watchlistModel.movieWatchlist.any((movie) => movie.id == movie.id);
+                                bool isAdded =
+                                watchlistModel.movieWatchlist.contains(movie);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (isAdded) {
+                                      watchlistModel.removeFromWatchlist(movie);
+                                    } else {
+                                      watchlistModel.addToWatchlist(movie);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 35.0,
+                                    height: 40.0,
+                                    child: ClipPath(
+                                      clipper: BookmarkClipper(),
+                                      child: CustomPaint(
+                                        painter: BookmarkPainter(
+                                          isAdded ? Colors.orange : Colors.black45,
+                                          isAdded ? Colors.black : Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            isAdded ? Icons.check_rounded : Icons.add,
+                                            size: 30.0,
+                                            color:
+                                            isAdded ? Colors.white : Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],

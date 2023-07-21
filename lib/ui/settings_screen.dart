@@ -1,20 +1,63 @@
 import 'package:CMDb/ui/profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:page_route_animator/page_route_animator.dart';
-import 'package:page_transition/page_transition.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key key}) : super(key: key);
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+
+  void showEmailAddress(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Center(
+              child: Text(
+                user.email,
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      // Handle the case when the user is not signed in.
+      // You can show a different dialog or redirect to the sign-in screen.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           "Settings",
           style: TextStyle(fontSize: 30),
         ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.grey,
+                    width: 0.1,
+                  ),
+                ),
+              ),
+            ),
+          ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,12 +84,12 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       PageRouteAnimator(
-                        child: const ProfileScreen(), currentChild: this,
+                        child: const ProfileScreen(), currentChild: this.widget,
                         routeAnimation: RouteAnimation.rightToLeftJoined,
                         settings: const RouteSettings(arguments: SettingsScreen()),
                         curve: Curves.easeOut,
-                        duration: const Duration(milliseconds: 600),
-                        reverseDuration: const Duration(milliseconds: 600),
+                        duration: const Duration(milliseconds: 200),
+                        reverseDuration: const Duration(milliseconds: 200),
                       ),
                       // PageTransition(
                       //   type: PageTransitionType.rightToLeftWithFade,
@@ -93,7 +136,7 @@ class SettingsScreen extends StatelessWidget {
                   title: Text('Email Address'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    // Handle watchlist action
+                    showEmailAddress(context);
                   },
                 ),
               ),
@@ -145,7 +188,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: Icon(Icons.password_outlined),
-                  title: Text('Passwsord Reset'),
+                  title: Text('Password Reset'),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     // Handle favorite movies action
@@ -280,7 +323,7 @@ class SettingsScreen extends StatelessWidget {
                         color: Colors.red, fontWeight: FontWeight.w900),
                   ),
                   onTap: () {
-                    // Handle favorite movies action
+                    FirebaseAuth.instance.signOut();
                   },
                 ),
               ),

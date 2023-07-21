@@ -18,8 +18,23 @@ class WatchListScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
             leading: Icon(Icons.bookmark_added_rounded),
             title: Text("Favorites"),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(1),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey,
+                      width: 0.1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),

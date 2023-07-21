@@ -1,6 +1,5 @@
 import 'package:CMDb/widgets/bookmark_clipper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/painting.dart';
 
 class BookmarkPainter extends CustomPainter {
   final Color backgroundColor;

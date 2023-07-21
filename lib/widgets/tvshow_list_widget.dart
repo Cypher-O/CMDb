@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc.dart';
 import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_event.dart';
-import 'package:CMDb/bloc/tvshowbloc/tvshow_bloc_state.dart';
 import 'package:CMDb/model/tvshow.dart';
 import 'package:CMDb/model/watch_list.dart';
 import 'package:CMDb/ui/rating_widget.dart';

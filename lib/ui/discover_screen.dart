@@ -43,7 +43,6 @@ class DiscoverScreen extends StatefulWidget {
 class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     searchWidgets = SearchWidgets(context, setState);
   }
@@ -69,6 +68,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       ],
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           leading: Icon(Icons.find_in_page_outlined),
           title: Text("Discover"),
           actions: [
@@ -84,21 +85,50 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
             ),
           ],
-          bottom: searchDelegate.searchVisible ? SearchBar(
-            onSearchTextChanged:searchDelegate.updateSearchResults,
+          // bottom: searchDelegate.searchVisible ? SearchBar(
+          //   onSearchTextChanged:searchDelegate.updateSearchResults,
+          //   onClearButtonPressed: () {
+          //     setState(() {
+          //       searchDelegate.searchController.clear(); // Clear the search text
+          //       searchDelegate.searchResults = []; // Clear the search results
+          //     });
+          //   },
+          //   onBackButtonPressed: () {// Go back to the previous screen
+          //     setState(() {
+          //       searchDelegate.searchVisible = false; // Dispose of the bottom in the AppBar
+          //       searchDelegate.searchResults = []; // Clear the search results
+          //     });
+          //   },
+          // ) : null,
+          bottom: searchDelegate.searchVisible
+              ? SearchBar(
+            onSearchTextChanged: searchDelegate.updateSearchResults,
             onClearButtonPressed: () {
               setState(() {
-                searchDelegate.searchController.clear(); // Clear the search text
-                searchDelegate.searchResults = []; // Clear the search results
+                searchDelegate.searchController.clear();
+                searchDelegate.searchResults = [];
               });
             },
-            onBackButtonPressed: () {// Go back to the previous screen
+            onBackButtonPressed: () {
               setState(() {
-                searchDelegate.searchVisible = false; // Dispose of the bottom in the AppBar
-                searchDelegate.searchResults = []; // Clear the search results
+                searchDelegate.searchVisible = false;
+                searchDelegate.searchResults = [];
               });
             },
-          ) : null,
+          )
+              : PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey,
+                    width: 0.1,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
         body: IndexedStack(
           // height: double.infinity,
@@ -106,7 +136,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             _buildBody(context),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:CMDb/model/born_today.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class BornTodayListWidget extends StatelessWidget {
   final List<BornToday> bornToday;
@@ -20,13 +21,30 @@ class BornTodayListWidget extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
+          IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                VerticalDivider(thickness: 3.0, width: 0.0, color: Colors.orange,),
+                SizedBox(width: 8.0),
+                Text(
+                  'Born Today'.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'mulish',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
           Text(
-            'Born Today'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontFamily: 'mulish',
+            "People born on ${DateFormat('MMMM').format(DateTime.now())} ${DateTime.now().day}",
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 16,
             ),
           ),
           const SizedBox(
